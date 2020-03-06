@@ -7,10 +7,18 @@ class Book extends PureComponent {
     authors: PropTypes.arrayOf(PropTypes.string).isRequired,
     imageUrl: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
+    moveBookToCategory: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
+
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+  }
+
+  handleCategoryChange(event) {
+    const category = event.target.value;
+    this.props.moveBookToCategory(category);
   }
 
   render() {
@@ -24,9 +32,9 @@ class Book extends PureComponent {
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{width: 128, height: 193, backgroundImage: imageUrl}}></div>
+          <div className="book-cover" style={{width: 128, height: 193, backgroundSize: 'cover', backgroundImage: `url(${imageUrl})`}}></div>
           <div className="book-shelf-changer">
-            <select defaultValue={category}>
+            <select onChange={this.handleCategoryChange} defaultValue={category}>
               <option value="move" disabled>Move to...</option>
               <option value={'CURRENTLY_READING'}>Currently Reading</option>
               <option value={'WANT_TO_READ'}>Want to Read</option>

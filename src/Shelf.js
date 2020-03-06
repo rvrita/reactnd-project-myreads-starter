@@ -7,14 +7,15 @@ export default class Shelf extends PureComponent {
   static propTypes = {
     books: PropTypes.arrayOf(PropTypes.object),
     title: PropTypes.string,
-  }
+    category: PropTypes.string,
+  };
 
   constructor(props) {
     super(props);
   }
 
   render() {
-    const {books, title} = this.props;
+    const {books, title, category} = this.props;
 
     return (
       <div className="bookshelf">
@@ -24,7 +25,10 @@ export default class Shelf extends PureComponent {
             {
               books.map(book => (
                 <li key={book.title}>
-                  <Book {...book}/>
+                  <Book {...book} category={category} moveBookToCategory={(newCategory) => {
+                    this.props.removeBookFromShelf(book, category);
+                    this.props.addBookToShelf(book, newCategory);
+                  }}/>
                 </li>
               ))
             }
