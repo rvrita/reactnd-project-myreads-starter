@@ -67,8 +67,8 @@ class SearchPage extends React.Component {
           {
             books.map(book => (
               <li key={book.title + book.authors[0]}>
-                <Book {...book} moveBookToCategory={(newCategory) => {
-                  this.props.addBookToShelf(book, newCategory);
+                <Book {...book} moveToCategory={category => {
+                  this.props.moveBookToCategory(book, category);
                 }}/>
               </li>
             ))
@@ -79,6 +79,6 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.propTypes = {addBookToShelf: PropTypes.func};
+SearchPage.propTypes = {moveBookToCategory: PropTypes.func};
 
 export default withRouter(SearchPage);

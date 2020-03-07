@@ -7,7 +7,7 @@ class Book extends PureComponent {
     authors: PropTypes.arrayOf(PropTypes.string).isRequired,
     imageUrl: PropTypes.string.isRequired,
     category: PropTypes.string,
-    moveBookToCategory: PropTypes.func,
+    moveToCategory: PropTypes.func,
   };
 
   constructor(props) {
@@ -18,7 +18,7 @@ class Book extends PureComponent {
 
   handleCategoryChange(event) {
     const category = event.target.value;
-    this.props.moveBookToCategory(category);
+    this.props.moveToCategory(category);
   }
 
   render() {

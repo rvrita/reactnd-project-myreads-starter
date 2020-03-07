@@ -6,14 +6,14 @@ import {Shelves} from "./App";
 
 class HomePage extends React.Component {
   render() {
-    const {books, addBookToShelf } = this.props;
+    const {books, moveBookToCategory } = this.props;
 
     return <div className="list-books">
       <div className="list-books-title">
         <h1>MyReads</h1>
       </div>
       <div className="list-books-content">
-        {Shelves.map(shelf => <Shelf addBookToShelf={addBookToShelf}
+        {Shelves.map(shelf => <Shelf moveBookToCategory={moveBookToCategory}
                                      key={shelf.title}
                                      title={shelf.title}
                                      books={books.filter(book => book.category === shelf.category)}
@@ -28,7 +28,7 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   books: PropTypes.array,
-  addBookToShelf: PropTypes.func,
+  moveBookToCategory: PropTypes.func,
 };
 
 export default withRouter(HomePage);

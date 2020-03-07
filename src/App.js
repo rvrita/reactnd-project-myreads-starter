@@ -22,7 +22,7 @@ class BooksApp extends React.Component {
   constructor(props) {
     super(props);
 
-    this.addBookToShelf = this.addBookToShelf.bind(this);
+    this.moveBookToCategory = this.moveBookToCategory.bind(this);
 
     this.state = {
       books: [
@@ -51,7 +51,7 @@ class BooksApp extends React.Component {
     };
   }
 
-  addBookToShelf(book, category) {
+  moveBookToCategory(book, category) {
     let {books} = this.state;
 
     const existingBook = books.find(b => b.id === book.id);
@@ -71,10 +71,10 @@ class BooksApp extends React.Component {
         <div className="app">
           <Switch>
             <Route path="/" exact>
-              <HomePage addBookToShelf={this.addBookToShelf} books={this.state.books}/>
+              <HomePage moveBookToCategory={this.moveBookToCategory} books={this.state.books}/>
             </Route>
             <Route path="/search">
-              <SearchPage addBookToShelf={this.addBookToShelf} books={this.state.books}/>
+              <SearchPage moveBookToCategory={this.moveBookToCategory} books={this.state.books}/>
             </Route>
           </Switch>
         </div>
