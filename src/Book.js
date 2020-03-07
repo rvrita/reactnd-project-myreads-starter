@@ -6,7 +6,7 @@ class Book extends PureComponent {
     title: PropTypes.string.isRequired,
     authors: PropTypes.arrayOf(PropTypes.string).isRequired,
     imageUrl: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
+    category: PropTypes.string,
     moveBookToCategory: PropTypes.func,
   };
 

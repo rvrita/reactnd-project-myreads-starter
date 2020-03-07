@@ -90,11 +90,10 @@ class BooksApp extends React.Component {
             <Route path="/" exact>
               <HomePage removeBookFromShelf={this.removeBookFromShelf}
                         addBookToShelf={this.addBookToShelf}
-                        shelves={this.state.shelves}
-                        onClick={() => this.setState({showSearchPage: true})}/>
+                        shelves={this.state.shelves}/>
             </Route>
             <Route path="/search">
-              <SearchPage onClick={() => this.setState({showSearchPage: false})}/>
+              <SearchPage addBookToShelf={this.addBookToShelf}/>
             </Route>
           </Switch>
         </div>

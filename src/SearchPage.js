@@ -14,11 +14,18 @@ class SearchPage extends React.Component {
 
   handleSearchKeyUp(event) {
     const value = event.target.value;
-    console.log(value, event);
+
+    if (value === '') {
+      this.setState({searchResults: []});
+      return;
+    }
+
+    console.log(value);
 
     // Search doesn't work for queries more than 1 character.
     // It says "error: empty query"
     search(value).then(books => {
+      console.log(books);
       if (!Array.isArray(books)) {
         this.setState({searchResults: []});
       } else {
@@ -55,7 +62,7 @@ class SearchPage extends React.Component {
         <ol className="books-grid">
           {
             books.map(book => (
-              <li key={book.title}>
+              <li key={book.title + book.authors[0]}>
                 <Book {...book} category={null} moveBookToCategory={(newCategory) => {
                   // this.props.removeBookFromShelf(book, category);
                   this.props.addBookToShelf(book, newCategory);
@@ -69,6 +76,6 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.propTypes = {onClick: PropTypes.func};
+SearchPage.propTypes = {addBookToShelf: PropTypes.func};
 
 export default withRouter(SearchPage);
