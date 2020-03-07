@@ -6,7 +6,7 @@ import {Shelves} from "./App";
 
 class HomePage extends React.Component {
   render() {
-    const {books, addBookToShelf, removeBookFromShelf} = this.props;
+    const {books, addBookToShelf } = this.props;
 
     return <div className="list-books">
       <div className="list-books-title">
@@ -14,7 +14,6 @@ class HomePage extends React.Component {
       </div>
       <div className="list-books-content">
         {Shelves.map(shelf => <Shelf addBookToShelf={addBookToShelf}
-                                     removeBookFromShelf={removeBookFromShelf}
                                      key={shelf.title}
                                      title={shelf.title}
                                      books={books.filter(book => book.category === shelf.category)}
@@ -30,7 +29,6 @@ class HomePage extends React.Component {
 HomePage.propTypes = {
   books: PropTypes.array,
   addBookToShelf: PropTypes.func,
-  removeBookFromShelf: PropTypes.func,
 };
 
 export default withRouter(HomePage);
