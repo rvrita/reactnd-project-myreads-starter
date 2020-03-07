@@ -2,21 +2,22 @@ import React from "react";
 import Shelf from "./Shelf";
 import * as PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
+import {Shelves} from "./App";
 
 class HomePage extends React.Component {
   render() {
-    const {shelves, addBookToShelf, removeBookFromShelf} = this.props;
+    const {books, addBookToShelf, removeBookFromShelf} = this.props;
 
     return <div className="list-books">
       <div className="list-books-title">
         <h1>MyReads</h1>
       </div>
       <div className="list-books-content">
-        {shelves.map(shelf => <Shelf addBookToShelf={addBookToShelf}
+        {Shelves.map(shelf => <Shelf addBookToShelf={addBookToShelf}
                                      removeBookFromShelf={removeBookFromShelf}
                                      key={shelf.title}
                                      title={shelf.title}
-                                     books={shelf.books}
+                                     books={books.filter(book => book.category === shelf.category)}
                                      category={shelf.category}/>)}
       </div>
       <div className="open-search">
@@ -26,6 +27,10 @@ class HomePage extends React.Component {
   }
 }
 
-HomePage.propTypes = {onClick: PropTypes.func};
+HomePage.propTypes = {
+  books: PropTypes.array,
+  addBookToShelf: PropTypes.func,
+  removeBookFromShelf: PropTypes.func,
+};
 
 export default withRouter(HomePage);

@@ -3,6 +3,7 @@ import * as PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
 import {search} from "./BooksAPI";
 import Book from "./Book";
+import {NONE} from "./App";
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -34,6 +35,9 @@ class SearchPage extends React.Component {
             title: book.title,
             authors: book.authors ? book.authors : [],
             imageUrl: book.imageLinks && book.imageLinks.thumbnail,
+            // optional chaining!
+            category: this.props.books.find(b => b.id === book.id)?.category || NONE,
+            id: book.id,
           })),
         });
       }
@@ -48,13 +52,13 @@ class SearchPage extends React.Component {
         <button className="close-search" onClick={() => this.props.history.push("/")}>Close</button>
         <div className="search-books-input-wrapper">
           {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+            NOTES: The search from BooksAPI is limited to a particular set of search terms.
+            You can find these search terms here:
+            https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
+            However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+            you don't find a specific author or title. Every search is limited by search terms.
+          */}
           <input onKeyUp={this.handleSearchKeyUp} type="text" placeholder="Search by title or author"/>
         </div>
       </div>
@@ -63,8 +67,7 @@ class SearchPage extends React.Component {
           {
             books.map(book => (
               <li key={book.title + book.authors[0]}>
-                <Book {...book} category={null} moveBookToCategory={(newCategory) => {
-                  // this.props.removeBookFromShelf(book, category);
+                <Book {...book} moveBookToCategory={(newCategory) => {
                   this.props.addBookToShelf(book, newCategory);
                 }}/>
               </li>
