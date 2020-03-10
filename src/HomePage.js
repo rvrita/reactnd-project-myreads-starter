@@ -6,18 +6,18 @@ import {Shelves} from "./App";
 
 class HomePage extends React.Component {
   render() {
-    const {books, moveBookToCategory } = this.props;
+    const {books, moveBookToShelf } = this.props;
 
     return <div className="list-books">
       <div className="list-books-title">
         <h1>MyReads</h1>
       </div>
       <div className="list-books-content">
-        {Shelves.map(shelf => <Shelf moveBookToCategory={moveBookToCategory}
-                                     key={shelf.title}
+        {Shelves.map(shelf => <Shelf moveBookToShelf={moveBookToShelf}
+                                     key={shelf.id}
                                      title={shelf.title}
-                                     books={books.filter(book => book.category === shelf.category)}
-                                     category={shelf.category}/>)}
+                                     books={books.filter(book => book.shelf === shelf.id)}
+                                     shelf={shelf.id}/>)}
       </div>
       <div className="open-search">
         <button onClick={() => this.props.history.push('/search')}>Add a book</button>
@@ -28,7 +28,7 @@ class HomePage extends React.Component {
 
 HomePage.propTypes = {
   books: PropTypes.array,
-  moveBookToCategory: PropTypes.func,
+  moveBookToShelf: PropTypes.func,
 };
 
 export default withRouter(HomePage);

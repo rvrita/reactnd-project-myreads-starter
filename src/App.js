@@ -4,65 +4,60 @@ import './App.css';
 import SearchPage from "./SearchPage";
 import HomePage from "./HomePage";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import BooksAPI from "./BooksAPI";
 
 
-export const CURRENTLY_READING = 'CURRENTLY_READING';
-export const WANT_TO_READ = 'WANT_TO_READ';
-export const HAS_BEEN_READ = 'HAS_BEEN_READ';
-export const NONE = 'NONE';
+export const CURRENTLY_READING = 'currentlyReading';
+export const WANT_TO_READ = 'wantToRead';
+export const HAS_BEEN_READ = 'read';
+export const NONE = 'none';
 export const Shelves = [
-  {title: 'Currently Reading', category: CURRENTLY_READING},
-  {title: 'Want to Read', category: WANT_TO_READ},
-  {title: 'Read', category: HAS_BEEN_READ},
+  {title: 'Currently Reading', id: CURRENTLY_READING},
+  {title: 'Want to Read', id: WANT_TO_READ},
+  {title: 'Read', id: HAS_BEEN_READ},
 ];
 
 class BooksApp extends React.Component {
-  state = {};
-
   constructor(props) {
     super(props);
 
-    this.moveBookToCategory = this.moveBookToCategory.bind(this);
+    this.moveBookToShelf = this.moveBookToShelf.bind(this);
 
     this.state = {
-      books: [
-        {
-          category: CURRENTLY_READING,
-          title: "My Fuzzy Life",
-          authors: ["Captain Chili McGenius"],
-          imageUrl: "https://www.dogbreedinfo.com/images27/YorkshireTerrierYorkieSonny5YearsOldPurebredDog1.JPG",
-          id: "0001",
-        },
-        {
-          category: CURRENTLY_READING,
-          title: "Memoirs from Being Cute",
-          authors: ["Captain Chili McGenius"],
-          imageUrl: "https://www.dogbreedinfo.com/images27/YorkshireTerrierYorkieSonny5YearsOldPurebredDog1.JPG",
-          id: "0002",
-        },
-        {
-          category: CURRENTLY_READING,
-          title: "How to Be Very Cute",
-          authors: ["Captain Chili McGenius"],
-          imageUrl: "https://www.dogbreedinfo.com/images27/YorkshireTerrierYorkieSonny5YearsOldPurebredDog1.JPG",
-          id: "0003",
-        },
-      ],
+      books: [],
     };
   }
 
-  moveBookToCategory(book, category) {
-    let {books} = this.state;
+  componentDidMount() {
+    // fetch all books
+    BooksAPI.getAll().then(books => {
+      console.log(books);
+      this.setState({
+        books: books.map(book => ({
+          title: book.title,
+          authors: book.authors || [],
+          imageUrl: book.imageLinks?.thumbnail,
+          shelf: book.shelf,
+          id: book.id,
+        }))
+      });
+    });
+  }
 
-    const existingBook = books.find(b => b.id === book.id);
-    if (existingBook) {
-      existingBook.category = category;
-    } else {
-      books.push(book);
-      book.category = category;
-    }
+  moveBookToShelf(book, shelf) {
+    BooksAPI.update(book, shelf).then(response => {
+      let {books} = this.state;
 
-    this.setState({books: books});
+      const existingBook = books.find(b => b.id === book.id);
+      if (existingBook) {
+        existingBook.shelf = shelf;
+      } else {
+        books.push(book);
+        book.shelf = shelf;
+      }
+
+      this.setState({books: books});
+    });
   }
 
   render() {
@@ -71,10 +66,10 @@ class BooksApp extends React.Component {
         <div className="app">
           <Switch>
             <Route path="/" exact>
-              <HomePage moveBookToCategory={this.moveBookToCategory} books={this.state.books}/>
+              <HomePage moveBookToShelf={this.moveBookToShelf} books={this.state.books}/>
             </Route>
             <Route path="/search">
-              <SearchPage moveBookToCategory={this.moveBookToCategory} books={this.state.books}/>
+              <SearchPage moveBookToShelf={this.moveBookToShelf} books={this.state.books}/>
             </Route>
           </Switch>
         </div>

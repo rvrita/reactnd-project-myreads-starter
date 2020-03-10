@@ -1,7 +1,7 @@
 import React from "react";
 import * as PropTypes from "prop-types";
 import {withRouter} from "react-router-dom";
-import {search} from "./BooksAPI";
+import BooksAPI from "./BooksAPI";
 import Book from "./Book";
 import {NONE} from "./App";
 
@@ -23,9 +23,7 @@ class SearchPage extends React.Component {
 
     console.log(value);
 
-    // Search doesn't work for queries more than 1 character.
-    // It says "error: empty query"
-    search(value).then(books => {
+    BooksAPI.search(value).then(books => {
       console.log(books);
       if (!Array.isArray(books)) {
         this.setState({searchResults: []});
@@ -36,7 +34,7 @@ class SearchPage extends React.Component {
             authors: book.authors ? book.authors : [],
             imageUrl: book.imageLinks && book.imageLinks.thumbnail,
             // optional chaining!
-            category: this.props.books.find(b => b.id === book.id)?.category || NONE,
+            shelf: this.props.books.find(b => b.id === book.id)?.shelf || NONE,
             id: book.id,
           })),
         });
@@ -66,9 +64,9 @@ class SearchPage extends React.Component {
         <ol className="books-grid">
           {
             books.map(book => (
-              <li key={book.title + book.authors[0]}>
-                <Book {...book} moveToCategory={category => {
-                  this.props.moveBookToCategory(book, category);
+              <li key={book.id}>
+                <Book {...book} moveToShelf={shelf => {
+                  this.props.moveBookToShelf(book, shelf);
                 }}/>
               </li>
             ))
@@ -79,6 +77,6 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.propTypes = {moveBookToCategory: PropTypes.func};
+SearchPage.propTypes = {moveBookToShelf: PropTypes.func};
 
 export default withRouter(SearchPage);

@@ -42,3 +42,11 @@ export const search = (query) =>
     body: JSON.stringify({ query: query })
   }).then(res => res.json())
     .then(data => data.books)
+
+
+export default {
+  get,
+  getAll,
+  update,
+  search,
+}

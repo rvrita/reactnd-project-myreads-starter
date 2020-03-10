@@ -1,24 +1,25 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import {CURRENTLY_READING, HAS_BEEN_READ, NONE, WANT_TO_READ} from "./App";
 
 class Book extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
     authors: PropTypes.arrayOf(PropTypes.string).isRequired,
     imageUrl: PropTypes.string.isRequired,
-    category: PropTypes.string,
-    moveToCategory: PropTypes.func,
+    shelf: PropTypes.string,
+    moveToShelf: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
 
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handleShelfChange = this.handleShelfChange.bind(this);
   }
 
-  handleCategoryChange(event) {
-    const category = event.target.value;
-    this.props.moveToCategory(category);
+  handleShelfChange(event) {
+    const shelf = event.target.value;
+    this.props.moveToShelf(shelf);
   }
 
   render() {
@@ -26,7 +27,7 @@ class Book extends PureComponent {
       title,
       authors,
       imageUrl,
-      category,
+      shelf,
     } = this.props;
 
     return (
@@ -34,12 +35,12 @@ class Book extends PureComponent {
         <div className="book-top">
           <div className="book-cover" style={{width: 128, height: 193, backgroundSize: 'cover', backgroundImage: `url(${imageUrl})`}}></div>
           <div className="book-shelf-changer">
-            <select onChange={this.handleCategoryChange} defaultValue={category}>
+            <select onChange={this.handleShelfChange} defaultValue={shelf}>
               <option value="move" disabled>Move to...</option>
-              <option value={'CURRENTLY_READING'}>Currently Reading</option>
-              <option value={'WANT_TO_READ'}>Want to Read</option>
-              <option value={'HAS_BEEN_READ'}>Read</option>
-              <option value={'NONE'}>None</option>
+              <option value={CURRENTLY_READING}>Currently Reading</option>
+              <option value={WANT_TO_READ}>Want to Read</option>
+              <option value={HAS_BEEN_READ}>Read</option>
+              <option value={NONE}>None</option>
             </select>
           </div>
         </div>
